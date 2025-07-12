@@ -1,4 +1,5 @@
 {
   "appName": "Online Exam App",
-  "login" : "Login"
+  "login" : "Login",
+  "userEmail" : "User Email"
 }
