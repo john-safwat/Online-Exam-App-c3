@@ -4,6 +4,4 @@ abstract class Constants{
   static const String arLocaleKey = "ar";
   static const String enLocaleKey = "en";
 
-  // fake new content
-
 }
