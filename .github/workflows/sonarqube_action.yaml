@@ -2,11 +2,7 @@ name: SonarQube Analysis
 
 on:
   push:
-    branches:
-      - development
   pull_request:
-    branches:
-      - development
 
 jobs:
   build:
@@ -14,8 +10,36 @@ jobs:
 
     steps:
       - uses: actions/checkout@v5
-      - name: Build with Maven and SonarQube Scan
-        run: mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar
-          -Dsonar.projectKey=your_project_key
-          -Dsonar.host.url=${{ secrets.SONAR_HOST_URL }}
-          -Dsonar.token=${{ secrets.SONAR_TOKEN }}
+        with:
+            fetch-depth: 0 # Required for SonarQube analysi
+
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          flutter-version: 3.29.2
+      - run: flutter --version
+      - name: Install packages
+        run: flutter pub get
+      # Add Flutter to PATH
+      - name: Add Flutter to PATH
+        run: echo "$HOME/.pub-cache/bin" >> $GITHUB_PATH
+      # Run Flutter analyze
+      - name: Analyze code
+        run: flutter analyze
+      # Run tests and generate coverage
+      - name: Run tests
+        run: flutter test --coverage
+      # Run SonarQube scan
+      - name: SonarQube Scan
+        uses: SonarSource/sonarqube-scan-action@master
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
+        with:
+          args: >
+            -Dsonar.projectKey=your_project_key
+            -Dsonar.sources=lib,pubspec.yaml
+            -Dsonar.tests=test
+            -Dsonar.dart.analyzer.mode=FLUTTER
+            -Dsonar.coverageReportPaths=coverage/lcov.info
