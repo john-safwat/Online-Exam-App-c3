@@ -20,7 +20,7 @@ class LoginView extends StatelessWidget {
               label: Text("aasdas"  , style: Theme.of(context).textTheme.bodyMedium,)
             ),
           ),
-          FilledButton(onPressed: null, child: Text("Login"))
+          const FilledButton(onPressed: null, child: Text("Login"))
         ],
       ),
     );

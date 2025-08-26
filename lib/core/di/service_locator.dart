@@ -1,7 +1,6 @@
 import 'package:get_it/get_it.dart';
 import 'package:injectable/injectable.dart';
 import 'package:online_exam_app_c3/presentation/login/login_view.dart';
-import 'package:online_exam_app_c3/presentation/login/login_view_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class ServiceLocator {
