@@ -38,7 +38,7 @@ jobs:
           SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
         with:
           args: >
-            -Dsonar.projectKey=your_project_key
+            -Dsonar.projectKey=john-safwat_Online-Exam-App-c3
             -Dsonar.sources=lib,pubspec.yaml
             -Dsonar.tests=test
             -Dsonar.dart.analyzer.mode=FLUTTER
