@@ -1,19 +1,39 @@
-name: Build
+name: Build for Sonar
 on:
   push:
-  pull_request:
+
 jobs:
-  sonarqube:
-    name: SonarQube
+  sonarcloud:
+    name: SonarCloud
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v5
-        with:
-          fetch-depth: 0
 
-      - name: Build
-        run: <mark><commands_to_build_your_project></mark>
-      - name: SonarQube Scan
-        uses: SonarSource/sonarqube-scan-action@v5
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          flutter-version: 3.29.2
+      - run: flutter --version
+
+      - name: Install Dependencies
+        run: flutter pub get
+      #5 Run flutter tests
+      - name: Run Flutter Tests
+        run: flutter test --coverage
+      #6 Run Sonar cloud scan
+      - name: SonarCloud Scan
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        run: |
+          export SONAR_SCANNER_VERSION=6.2.1.4610
+          export SONAR_SCANNER_HOME=$HOME/.sonar/sonar-scanner-$SONAR_SCANNER_VERSION-linux-x64
+          curl --create-dirs -sSLo $HOME/.sonar/sonar-scanner.zip https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-$SONAR_SCANNER_VERSION-linux-x64.zip
+          unzip -o $HOME/.sonar/sonar-scanner.zip -d $HOME/.sonar/
+          export PATH=$SONAR_SCANNER_HOME/bin:$PATH
+          export SONAR_SCANNER_OPTS="-server"
+          sonar-scanner \
+            -Dsonar.organization=your_organization \
+            -Dsonar.projectKey=your_project_key\
+            -Dsonar.sources=. \
+            -Dsonar.host.url=https://sonarcloud.io
