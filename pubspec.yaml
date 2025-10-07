@@ -19,6 +19,7 @@ dependencies:
   pretty_dio_logger:
   shared_preferences:
   provider:
+  location: ^5.0.0
 
   flutter_bloc:
 
