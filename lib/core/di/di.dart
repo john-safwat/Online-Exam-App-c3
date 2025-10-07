@@ -1,9 +1,7 @@
-import 'package:dio/dio.dart';
+
 import 'package:get_it/get_it.dart';
 import 'package:injectable/injectable.dart';
 import 'package:online_exam_app_c3/core/di/di.config.dart';
-import 'package:online_exam_app_c3/presentation/login/login_view.dart';
-import 'package:online_exam_app_c3/presentation/login/login_view_model.dart';
 
 final getIt = GetIt.instance;
 
